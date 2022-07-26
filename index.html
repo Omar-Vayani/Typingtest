@@ -5,16 +5,22 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./style.css" />
-    <script src="./timer.js" defer></script>
     <script src="./app.js" defer></script>
     <title>Typing Test</title>
   </head>
   <body>
     <h1>Typing Test</h1>
+
     <div class="container">
+      <div class="result">
+        <h2>0 WPM</h2>
+        <p>wrongs: <b class="wrongs">0</b></p>
+        <p>corrects: <b class="corrects">0</b></p>
+        <button tabindex="2">Again</button>
+      </div>
       <div class="countdown">1:00</div>
       <div class="textDisplay"></div>
-      <textarea id="text-input" autofocus></textarea>
+      <textarea id="text-input" tabindex="1" autofocus></textarea>
     </div>
   </body>
 </html>

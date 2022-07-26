@@ -40,7 +40,10 @@ body {
 .incorrect {
   color: red;
 }
-
+span.active {
+  color: rgb(207, 139, 255);
+  text-decoration: underline;
+}
 /*timer*/
 .countdown {
   width: 100%;
@@ -49,4 +52,40 @@ body {
   text-align: center;
   font-size: calc(1rem + 2vw);
   font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+}
+
+/* results  */
+.result {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  align-items: center;
+  background: white;
+}
+.result button {
+  width: 100%;
+  flex: 1;
+  font-size: calc(0.5rem + 2vw);
+  border: none;
+  border-left: 2px solid black;
+}
+.result h2 {
+  flex: 2;
+  font-size: calc(0.75rem + 2vw);
+}
+.result p {
+  flex: 3;
+  font-size: calc(0.25rem + 2vw);
+  background-color: white;
+}
+/* .result.active {
+  opacity: 1;
+  pointer-events: all;
+} */
+.wrongs {
+  color: red;
+}
+.corrects {
+  color: green;
 }

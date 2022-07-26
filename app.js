@@ -107,6 +107,9 @@ const words100 = [
   "part",
 ];
 let count = 0;
+let wpm = 0;
+let wrong = 0;
+let correct = 0;
 
 //events
 textInput.addEventListener("input", (e) => {
@@ -117,19 +120,27 @@ textInput.addEventListener("input", (e) => {
   for (let i = 0; i < letters.length; i++) {
     word[i] = spans[count].innerText.split("")[i];
   }
-
   if (letters.some((letter, index) => letter != word[index])) {
     spans[count].classList.add("incorrect");
-  } else {
+    spans[count].classList.remove("active");
+  } else if (letters.some((letter, index) => letter == word[index])) {
     spans[count].classList.remove("incorrect");
+    spans[count].classList.add("active");
   }
 
   if (e.target.value.includes(" ")) {
+    if (count > -1) {
+      spans[count + 1].classList.add("active");
+    }
     if (e.target.value == spans[count].innerText) {
+      correct++;
       spans[count].classList.add("correct");
       spans[count].classList.remove("incorrect");
+      spans[count].classList.remove("active");
     } else {
+      wrong++;
       spans[count].classList.remove("correct");
+      spans[count].classList.remove("active");
       spans[count].classList.add("incorrect");
     }
     count++;
@@ -151,11 +162,75 @@ function setWords() {
     const el = document.createElement("span");
     let text =
       i == 1
-        ? ` ${words100[Math.floor(Math.random() * 100)]} `
+        ? `${words100[Math.floor(Math.random() * 100)]} `
         : `${words100[Math.floor(Math.random() * 100)]} `;
-    el.innerText = text;
+    el.innerHTML = text;
     textDisplay.appendChild(el);
   }
 }
 //running
 setWords();
+
+//timer
+
+const timeDisplay = document.querySelector(".countdown");
+const resultBtn = document.querySelector(".result button");
+
+let time = 60;
+let canStart = true;
+let restartTimer = false;
+
+function startTimer() {
+  if (canStart) {
+    let timer = setInterval(() => {
+      if (time == 0) {
+        canStart = true;
+        giveResult();
+        clearInterval(timer);
+      } else {
+        time--;
+        timeDisplay.innerHTML =
+          time == 60 ? `01:00` : time < 10 ? `00:0${time}` : `00:${time}`;
+      }
+      if (restartTimer) {
+        restartTimer = false;
+        clearInterval(timer);
+      }
+    }, 1000);
+  }
+}
+// give results
+
+function giveResult() {
+  console.log("done");
+  document.querySelector(".result p b.wrongs").innerHTML = wrong;
+  document.querySelector(".result p b.corrects").innerHTML = correct;
+  document.querySelector(".result h2").innerHTML = ` ${correct - wrong}WPM`;
+  restart();
+}
+
+resultBtn.addEventListener("click", () => {
+  canStart = false;
+  restartTimer = true;
+  restart();
+});
+
+//restart
+
+function restart() {
+  timeDisplay.innerHTML = `01:00`;
+  time = 61;
+  count = 0;
+  wpm = 0;
+  wrong = 0;
+  correct = 0;
+  textInput.value = "";
+  textDisplay.innerHTML = "";
+  canStart = true;
+  setTimeout(() => {
+    setWords();
+    textInput.focus();
+  }, 1250);
+}
+
+//update
