@@ -110,6 +110,8 @@ let count = 0;
 
 //events
 textInput.addEventListener("input", (e) => {
+  startTimer();
+  canStart = false;
   let letters = e.target.value.split("");
   let word = [];
   for (let i = 0; i < letters.length; i++) {

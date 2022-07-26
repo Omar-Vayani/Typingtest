@@ -40,3 +40,13 @@ body {
 .incorrect {
   color: red;
 }
+
+/*timer*/
+.countdown {
+  width: 100%;
+  background-color: gray;
+  color: black;
+  text-align: center;
+  font-size: calc(1rem + 2vw);
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+}
