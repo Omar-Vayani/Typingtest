@@ -1,9 +1,9 @@
 //selectors
 const textDisplay = document.querySelector(".textDisplay");
+const timeDisplay = document.querySelector(".countdown");
 const textInput = document.querySelector("#text-input");
 const spans = document.getElementsByTagName("span");
 //declarations
-const words = `Sometimes to understand a word's meaning you need more than a definition; you need to see the word used in a sentence. At YourDictionary, we give you the tools to learn what a word means and how to use it correctly. With this sentence maker, simply type a word in the search bar and see a variety of sentences with that word used in its different ways. Our sentence generator can provide more context and relevance, ensuring you use a word the right way.`;
 const words100 = [
   "the",
   "be",
@@ -210,14 +210,17 @@ let count = 0;
 let wpm = 0;
 let wrong = 0;
 let correct = 0;
-let word = [];
-let letters = [];
 
+const initialTime = 60;
+let time = initialTime;
+let canStart = true;
+let restartTimer = false;
 //events
 textInput.addEventListener("input", (e) => {
+  let word = [];
   startTimer();
   canStart = false;
-  letters = e.target.value.split("");
+  let letters = e.target.value.split("");
   for (let i = 0; i < letters.length; i++) {
     word[i] = spans[count].innerText.split("")[i];
   }
@@ -250,18 +253,9 @@ textInput.addEventListener("input", (e) => {
     e.target.value = "";
   }
 });
-
 //functions
-function setWordsi() {
-  words.split(" ").forEach((word, index) => {
-    const el = document.createElement("span");
-    let text = index == 1 ? ` ${word} ` : `${word} `;
-    el.innerText = text;
-    textDisplay.appendChild(el);
-  });
-}
 function setWords() {
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < 150; i++) {
     const el = document.createElement("span");
     let text =
       i == 1
@@ -273,16 +267,7 @@ function setWords() {
 }
 //running
 setWords();
-
 //timer
-
-const timeDisplay = document.querySelector(".countdown");
-const resultBtn = document.querySelector(".result button");
-
-const initialTime = 60;
-let time = initialTime;
-let canStart = true;
-let restartTimer = false;
 
 function startTimer() {
   if (canStart) {
@@ -293,9 +278,10 @@ function startTimer() {
         clearInterval(timer);
       } else {
         time--;
-        timeDisplay.innerHTML =
+        let minutes = time;
+        let seconds;
+        timeDisplay.innerHTML = timeDisplay.innerHTML =
           time == 60 ? `01:00` : time < 10 ? `00:0${time}` : `00:${time}`;
-        // time == 60 ? `01:00` : time < 10 ? `00:0${time}` : `00:${time}`;
       }
       if (restartTimer) {
         restartTimer = false;
@@ -305,7 +291,6 @@ function startTimer() {
   }
 }
 // give results
-
 function giveResult() {
   console.log("done");
   document.querySelector(".result p b.wrongs").innerHTML = wrong;
@@ -315,21 +300,19 @@ function giveResult() {
   }WPM`;
   restart();
 }
-
-resultBtn.addEventListener("click", () => {
-  canStart = false;
+document.querySelector(".result button").addEventListener("click", () => {
+  canStart = true;
   restartTimer = true;
   restart();
+  time = 61;
 });
-
 //restart
-
 function restart() {
   textInput.value = "";
   textInput.readOnly = true;
   textDisplay.innerHTML = "";
   timeDisplay.innerHTML = `01:00`;
-  time = 61;
+  time = 60;
   count = 0;
   wpm = 0;
   wrong = 0;
@@ -339,5 +322,5 @@ function restart() {
     textInput.readOnly = false;
     setWords();
     textInput.focus();
-  }, 1250);
+  }, 700);
 }
