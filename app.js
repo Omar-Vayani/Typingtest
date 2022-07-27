@@ -6,117 +6,218 @@ const spans = document.getElementsByTagName("span");
 const words = `Sometimes to understand a word's meaning you need more than a definition; you need to see the word used in a sentence. At YourDictionary, we give you the tools to learn what a word means and how to use it correctly. With this sentence maker, simply type a word in the search bar and see a variety of sentences with that word used in its different ways. Our sentence generator can provide more context and relevance, ensuring you use a word the right way.`;
 const words100 = [
   "the",
+  "be",
   "of",
   "and",
   "a",
   "to",
   "in",
-  "is",
-  "you",
-  "that",
-  "it",
   "he",
-  "was",
+  "have",
+  "it",
+  "that",
   "for",
-  "on",
-  "are",
-  "as",
-  "with",
-  "his",
   "they",
   "I",
+  "with",
+  "as",
+  "not",
+  "on",
+  "she",
   "at",
-  "be",
+  "by",
   "this",
-  "have",
+  "we",
+  "you",
+  "do",
+  "but",
   "from",
   "or",
-  "one",
-  "had",
-  "by",
-  "word",
-  "but",
-  "not",
-  "what",
-  "all",
-  "were",
-  "we",
-  "when",
-  "your",
-  "can",
-  "said",
-  "there",
-  "use",
-  "an",
-  "each",
   "which",
-  "she",
-  "do",
-  "how",
-  "their",
-  "if",
-  "will",
-  "up",
-  "other",
-  "about",
-  "out",
-  "many",
-  "then",
-  "them",
-  "these",
-  "so",
-  "some",
-  "her",
+  "one",
   "would",
-  "make",
-  "like",
-  "him",
-  "into",
-  "time",
-  "has",
-  "look",
-  "two",
-  "more",
-  "write",
-  "go",
-  "see",
-  "number",
-  "no",
-  "way",
-  "could",
-  "people",
-  "my",
-  "than",
-  "first",
-  "water",
-  "been",
-  "call",
+  "all",
+  "will",
+  "there",
+  "say",
   "who",
-  "oil",
-  "its",
-  "now",
-  "find",
-  "long",
-  "down",
-  "day",
-  "did",
-  "get",
+  "make",
+  "when",
+  "can",
+  "more",
+  "if",
+  "no",
+  "man",
+  "out",
+  "other",
+  "so",
+  "what",
+  "time",
+  "up",
+  "go",
+  "about",
+  "than",
+  "into",
+  "could",
+  "state",
+  "only",
+  "new",
+  "year",
+  "some",
+  "take",
   "come",
-  "made",
+  "these",
+  "know",
+  "see",
+  "use",
+  "get",
+  "like",
+  "then",
+  "first",
+  "any",
+  "work",
+  "now",
   "may",
+  "such",
+  "give",
+  "over",
+  "think",
+  "most",
+  "even",
+  "find",
+  "day",
+  "also",
+  "after",
+  "way",
+  "many",
+  "must",
+  "look",
+  "before",
+  "great",
+  "back",
+  "through",
+  "long",
+  "where",
+  "much",
+  "should",
+  "well",
+  "people",
+  "down",
+  "own",
+  "just",
+  "because",
+  "good",
+  "each",
+  "those",
+  "feel",
+  "seem",
+  "how",
+  "high",
+  "too",
+  "place",
+  "little",
+  "world",
+  "very",
+  "still",
+  "nation",
+  "hand",
+  "old",
+  "life",
+  "tell",
+  "write",
+  "become",
+  "here",
+  "show",
+  "house",
+  "both",
+  "between",
+  "need",
+  "mean",
+  "call",
+  "develop",
+  "under",
+  "last",
+  "right",
+  "move",
+  "thing",
+  "general",
+  "school",
+  "never",
+  "same",
+  "another",
+  "begin",
+  "while",
+  "number",
   "part",
+  "turn",
+  "real",
+  "leave",
+  "might",
+  "want",
+  "point",
+  "form",
+  "off",
+  "child",
+  "few",
+  "small",
+  "since",
+  "against",
+  "ask",
+  "late",
+  "home",
+  "interest",
+  "large",
+  "person",
+  "end",
+  "open",
+  "public",
+  "follow",
+  "during",
+  "present",
+  "without",
+  "again",
+  "hold",
+  "govern",
+  "around",
+  "possible",
+  "head",
+  "consider",
+  "word",
+  "program",
+  "problem",
+  "however",
+  "lead",
+  "system",
+  "set",
+  "order",
+  "eye",
+  "plan",
+  "run",
+  "keep",
+  "face",
+  "fact",
+  "group",
+  "play",
+  "stand",
+  "increase",
+  "early",
+  "course",
+  "change",
+  "help",
+  "line",
 ];
 let count = 0;
 let wpm = 0;
 let wrong = 0;
 let correct = 0;
+let word = [];
+let letters = [];
 
 //events
 textInput.addEventListener("input", (e) => {
   startTimer();
   canStart = false;
-  let letters = e.target.value.split("");
-  let word = [];
+  letters = e.target.value.split("");
   for (let i = 0; i < letters.length; i++) {
     word[i] = spans[count].innerText.split("")[i];
   }
@@ -127,9 +228,11 @@ textInput.addEventListener("input", (e) => {
     spans[count].classList.remove("incorrect");
     spans[count].classList.add("active");
   }
-
+  if (count == spans.length - 5) {
+    setWords();
+  }
   if (e.target.value.includes(" ")) {
-    if (count > -1) {
+    if (count > -1 && count < spans.length - 1) {
       spans[count + 1].classList.add("active");
     }
     if (e.target.value == spans[count].innerText) {
@@ -176,7 +279,8 @@ setWords();
 const timeDisplay = document.querySelector(".countdown");
 const resultBtn = document.querySelector(".result button");
 
-let time = 60;
+const initialTime = 60;
+let time = initialTime;
 let canStart = true;
 let restartTimer = false;
 
@@ -191,6 +295,7 @@ function startTimer() {
         time--;
         timeDisplay.innerHTML =
           time == 60 ? `01:00` : time < 10 ? `00:0${time}` : `00:${time}`;
+        // time == 60 ? `01:00` : time < 10 ? `00:0${time}` : `00:${time}`;
       }
       if (restartTimer) {
         restartTimer = false;
@@ -205,7 +310,9 @@ function giveResult() {
   console.log("done");
   document.querySelector(".result p b.wrongs").innerHTML = wrong;
   document.querySelector(".result p b.corrects").innerHTML = correct;
-  document.querySelector(".result h2").innerHTML = ` ${correct - wrong}WPM`;
+  document.querySelector(".result h2").innerHTML = ` ${
+    (correct - wrong) / (initialTime / 60)
+  }WPM`;
   restart();
 }
 
@@ -218,19 +325,19 @@ resultBtn.addEventListener("click", () => {
 //restart
 
 function restart() {
+  textInput.value = "";
+  textInput.readOnly = true;
+  textDisplay.innerHTML = "";
   timeDisplay.innerHTML = `01:00`;
   time = 61;
   count = 0;
   wpm = 0;
   wrong = 0;
   correct = 0;
-  textInput.value = "";
-  textDisplay.innerHTML = "";
   canStart = true;
   setTimeout(() => {
+    textInput.readOnly = false;
     setWords();
     textInput.focus();
   }, 1250);
 }
-
-//update
