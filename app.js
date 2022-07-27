@@ -206,6 +206,7 @@ const words100 = [
   "help",
   "line",
 ];
+let wordsGenerated = 150;
 let count = 0;
 let wpm = 0;
 let wrong = 0;
@@ -255,7 +256,7 @@ textInput.addEventListener("input", (e) => {
 });
 //functions
 function setWords() {
-  for (let i = 0; i < 150; i++) {
+  for (let i = 0; i < wordsGenerated; i++) {
     const el = document.createElement("span");
     let text =
       i == 1
@@ -310,8 +311,8 @@ document.querySelector(".result button").addEventListener("click", () => {
 function restart() {
   textInput.value = "";
   textInput.readOnly = true;
-  textDisplay.innerHTML = "";
   timeDisplay.innerHTML = `01:00`;
+  textDisplay.style.color = "transparent";
   time = 60;
   count = 0;
   wpm = 0;
@@ -319,6 +320,8 @@ function restart() {
   correct = 0;
   canStart = true;
   setTimeout(() => {
+    textDisplay.innerHTML = "";
+    textDisplay.style.color = "white";
     textInput.readOnly = false;
     setWords();
     textInput.focus();
