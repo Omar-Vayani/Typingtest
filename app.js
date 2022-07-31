@@ -1,6 +1,5 @@
 //selectors
 const textDisplay = document.querySelector(".textDisplay");
-const timeDisplay = document.querySelector(".countdown");
 const textInput = document.querySelector("#text-input");
 const spans = document.getElementsByTagName("span");
 //declarations
@@ -211,17 +210,14 @@ let count = 0;
 let wpm = 0;
 let wrong = 0;
 let correct = 0;
+let word = [];
+let letters = [];
 
-const initialTime = 60;
-let time = initialTime;
-let canStart = true;
-let restartTimer = false;
 //events
 textInput.addEventListener("input", (e) => {
-  let word = [];
   startTimer();
   canStart = false;
-  let letters = e.target.value.split("");
+  letters = e.target.value.split("");
   for (let i = 0; i < letters.length; i++) {
     word[i] = spans[count].innerText.split("")[i];
   }
@@ -254,7 +250,16 @@ textInput.addEventListener("input", (e) => {
     e.target.value = "";
   }
 });
+
 //functions
+function setWordsi() {
+  words.split(" ").forEach((word, index) => {
+    const el = document.createElement("span");
+    let text = index == 1 ? ` ${word} ` : `${word} `;
+    el.innerText = text;
+    textDisplay.appendChild(el);
+  });
+}
 function setWords() {
   for (let i = 0; i < wordsGenerated; i++) {
     const el = document.createElement("span");
@@ -268,7 +273,16 @@ function setWords() {
 }
 //running
 setWords();
+
 //timer
+
+const timeDisplay = document.querySelector(".countdown");
+const resultBtn = document.querySelector(".result button");
+
+const initialTime = 6;
+let time = initialTime;
+let canStart = true;
+let restartTimer = false;
 
 function startTimer() {
   if (canStart) {
@@ -279,10 +293,9 @@ function startTimer() {
         clearInterval(timer);
       } else {
         time--;
-        let minutes = time;
-        let seconds;
-        timeDisplay.innerHTML = timeDisplay.innerHTML =
+        timeDisplay.innerHTML =
           time == 60 ? `01:00` : time < 10 ? `00:0${time}` : `00:${time}`;
+        // time == 60 ? `01:00` : time < 10 ? `00:0${time}` : `00:${time}`;
       }
       if (restartTimer) {
         restartTimer = false;
@@ -292,6 +305,7 @@ function startTimer() {
   }
 }
 // give results
+
 function giveResult() {
   console.log("done");
   document.querySelector(".result p b.wrongs").innerHTML = wrong;
@@ -301,13 +315,15 @@ function giveResult() {
   }WPM`;
   restart();
 }
-document.querySelector(".result button").addEventListener("click", () => {
-  canStart = true;
+
+resultBtn.addEventListener("click", () => {
+  canStart = false;
   restartTimer = true;
   restart();
-  time = 61;
 });
+
 //restart
+
 function restart() {
   textInput.value = "";
   textInput.readOnly = true;
@@ -325,5 +341,5 @@ function restart() {
     textInput.readOnly = false;
     setWords();
     textInput.focus();
-  }, 700);
+  }, 1250);
 }
